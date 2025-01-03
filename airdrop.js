@@ -70,15 +70,20 @@ const checkEligible = (address) => new Promise(async (resolve) => {
     }
     console.log(`Checking for ${keypairs.length} accounts...`)
 
+    let elig = 0;
+    let notElig = 0;
     for (let index = 0; index < keypairs.length; index++) {
         const publicKey = keypairs[index].publicKey.toBase58();
         const data = await checkEligible(publicKey);
 
         if (data == 0) {
             console.log(`${extractAddressParts(publicKey)} | You're not eligible`);
+            notElig++;
         } else {
             console.log(`${extractAddressParts(publicKey)} | You're eligible for ${data} SONIC`);
+            elig++;
         }
         delay(1);
     }
+    console.log(`Eligible: ${elig} wallet(s) | Not Eligible: ${notElig} wallet(s)`)
 })();
